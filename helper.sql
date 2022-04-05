@@ -62,3 +62,10 @@ WHILE @i <= 3
         END
 SET @i = @i + 1 
 END
+
+
+DECLARE @x0 INT = 0
+DECLARE @y0 INT = 0
+
+SET @x0 = (@i/3)*3
+SET @y0 = (@j/3)*3
