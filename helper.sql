@@ -64,8 +64,58 @@ SET @i = @i + 1
 END
 
 
-DECLARE @x0 INT = 0
-DECLARE @y0 INT = 0
+DROP TABLE IF EXISTS dbo.grid3;
+CREATE TABLE dbo.grid3
+( ID TINYINT IDENTITY(1,1)
+, [1] TINYINT NOT NULL
+, [2] TINYINT NOT NULL
+, [3] TINYINT NOT NULL
+, [4] TINYINT NOT NULL
+, [5] TINYINT NOT NULL
+, [6] TINYINT NOT NULL
+, [7] TINYINT NOT NULL
+, [8] TINYINT NOT NULL
+, [9] TINYINT NOT NULL
+)
 
-SET @x0 = (@i/3)*3
-SET @y0 = (@j/3)*3
+
+INSERT INTO dbo.grid3 ([1],[2],[3],[4],[5],[6],[7],[8],[9])
+		  SELECT 5,3,0,0,7,0,0,0,0 
+UNION ALL SELECT 6,0,0,1,9,5,0,0,0 
+UNION ALL SELECT 0,8,9,0,0,0,0,6,0 
+UNION ALL SELECT 8,0,0,0,6,0,0,0,3 
+UNION ALL SELECT 4,0,0,8,0,3,0,0,1 
+UNION ALL SELECT 7,0,0,0,2,0,0,0,6 
+UNION ALL SELECT 0,6,0,0,0,0,2,0,8 
+UNION ALL SELECT 0,0,0,4,1,9,0,0,5 
+UNION ALL SELECT 0,0,0,0,8,0,0,7,9 
+
+
+-- for 3x3 rectangles
+DECLARE @i int = 1
+declare @j int = 1
+
+DECLARE @k INT = 1
+WHILE @k <= 3
+BEGIN
+	DECLARE @n INT = 1
+	WHILE @n <= 3
+	BEGIN
+			DECLARE @x0 INT = 0
+			DECLARE @y0 INT = 0
+			SET @x0 = (@i/3)*3
+			SET @y0 = (@j/3)*3
+			 
+			 DECLARE @a INT = @x0+@i
+			 DECLARE @b INT = @y0+@j
+			 DECLARE @v INT = 0
+			 EXEC dbo.get_grid 
+					 @a
+					,@b
+					,@v OUT
+				SELECT @a, @b, @v
+		SET @n = @n + 1
+	END
+
+	SET @k = @k + 1
+END
