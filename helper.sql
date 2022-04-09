@@ -119,3 +119,69 @@ BEGIN
 
 	SET @k = @k + 1
 END
+
+
+
+
+-- Full possible function
+-- SET NOCOUNT ON; 
+
+
+DECLARE @i INT = 0
+WHILE @i <= 8
+    BEGIN
+    DECLARE @j INT = 0
+    WHILE @j <= 8
+        BEGIN
+                DECLARE @v  TINYINT  = 0
+                EXEC dbo.get_grid
+                    @i
+                    ,@j
+                    ,@v OUT
+                
+                    --SELECT 'True', @i, @j, @v
+		
+		-- Add  checker for each square (3x3)
+		 -- START:
+
+		 		DECLARE @x0 INT = 0
+				DECLARE @y0 INT = 0
+				SET @x0 = (@i/3)*3
+				SET @y0 = (@j/3)*3
+
+				DECLARE @k INT = 1
+				WHILE @k <= 3
+				BEGIN
+					DECLARE @n INT = 1
+					WHILE @n <= 3
+					BEGIN
+			 
+							-- DECLARE @a INT = @x0+@i
+							-- DECLARE @b INT = @y0+@j
+
+							 DECLARE @w INT = 0
+							 EXEC dbo.get_grid 
+									-- @a
+									--,@b
+									 @x0
+									,@y0
+									,@w OUT
+
+						IF  @w = 5
+							SELECT @w
+					
+								--SELECT @a, @b, @w
+
+						SET @n = @n + 1
+					END
+
+					SET @k = @k + 1
+				END
+		 -- END:
+
+        SET @j = @j + 1
+        END
+SET @i = @i + 1 
+END
+
+
