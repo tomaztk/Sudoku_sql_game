@@ -1,5 +1,3 @@
---CreateSudokuFunctions_PJR
-
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[sfnFindPossibles]') AND type in (N'FN', N'IF', N'TF', N'FS', N'FT'))
 Begin
 	DROP FUNCTION [dbo].[sfnFindPossibles]
@@ -19,15 +17,7 @@ End
 GO
 
 
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
--- =============================================
--- Author:		Pete Revell
--- Create date: 25th Jan 2019
--- Description:	Finds any numbers missing from three sets (ByBlock, ByRow and ByColumn)
--- =============================================
+
 Create Function [dbo].[sfnFindPossibles] (@strBlock As nVarChar(9), @strRow As nVarChar(9), @strColumn As nVarChar(9))
 Returns nVarChar(9)
 As
@@ -48,9 +38,6 @@ End;
 GO
 
 
-
-DROP FUNCTION IF EXISTS [dbo].[sfnRemoveExtraneousChars];
-GO 
 Create Function [dbo].[sfnRemoveExtraneousChars] (@strPossibles As nVarChar(9), @siNoLongerPossible As TinyInt)
 Returns nVarChar(9)
 As
@@ -64,8 +51,6 @@ Begin
 End
 GO
 
-
-DROP FUNCTION IF EXISTS [dbo].[sfnValidateSudokuSet];
 
 CREATE Function [dbo].[sfnValidateSudokuSet] (@strSudokuSet As nVarChar(9)) 
 Returns TinyInt
@@ -93,10 +78,7 @@ Begin
 End;
 GO
 
-
---Sudoku_PJR
 --Purpose:	To solve 9x9 Sudoku puzzles within a reasonable time
---Approach:	Use logic first, and when that can go no further, make guesses
 --Notes:	* Each cell in a 9x9 Sudoku is the intersection of three sets - Row Column and Block
 --			* Guesses are made from the smallest set of possbilities first
 --			* When a guess or series of guesses reaches an invalid conclusion, they need to be wound back in a structured manner
@@ -158,6 +140,9 @@ GO
 
 	Insert Into @tNumbers (tiNumb)
 	Values (1), (2), (3), (4), (5), (6), (7), (8), (9)
+
+
+    
 
 	CREATE TABLE #ByCell(tiGuessNo		TinyInt
 						, tiRow			TinyInt
