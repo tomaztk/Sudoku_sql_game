@@ -78,11 +78,6 @@ Begin
 End;
 GO
 
---Purpose:	To solve 9x9 Sudoku puzzles within a reasonable time
---Notes:	* Each cell in a 9x9 Sudoku is the intersection of three sets - Row Column and Block
---			* Guesses are made from the smallest set of possbilities first
---			* When a guess or series of guesses reaches an invalid conclusion, they need to be wound back in a structured manner
-
 	Declare @siCounter As SmallInt = 0
 			, @t datetime = getdate()
 			, @tiGuess As TinyInt = 0
@@ -112,18 +107,6 @@ GO
 	Set @strPuzzle = '056300400010000000000006000000009102020000007481000000090604001100070000507000300'
 	Set @strPuzzle = '600000040005002007729000003090040001000060000400080070300000165200400800050000004'
 
---Puzzle referenced in Aticle, plus the same but with a deliberate mistake
---	Set @strPuzzle = '020300000005040090040201370000000608560800010000000000003000127000070000910000050'
---	Set @strPuzzle = '024300000005040090040201370000000608560800010000000000003000127000070000910000050'
-
---Some puzzles you won't find in your newspaper
---	Set @strPuzzle = '123456789456789123789123456000000000000000000000000000000000000000000000000000000'
---	Set @strPuzzle = '123456789000000000000000000000000000000000000000000000000000000000000000000000000'
---	Set @strPuzzle = '123000000456000000789000000000123000000456000000789000000000123000000456000000789'
---	Set @strPuzzle = '100000000000000000000000000000000000000000000000000000000000000000000000000000000'
---	Set @strPuzzle = '900000000000000000000000000000000000000000000000000000000000000000000000000000000'
-
---	Set @strPuzzle = '809500000000804020400030000960700010004000500070003098000080006010302000000006105'
 
 	Declare @tNumbers As Table (tiNumb TinyInt Primary Key)
 
@@ -596,8 +579,7 @@ StartPossibles:
 		End
 	End
 
---ThatsAllForNowFolks
---Need to tidy up and go home
+
 	Select Substring(@strPuzzle, (tiRow -1) * 9 + 1, 9) As Puzzle, Max(RowSetString) As Solution From #ByCell Where tiGuessNo = @tiGuess Group By tiRow Order By tiRow
 	Drop Table #ByCell
 --	Select convert(varchar,datediff(ms,@t,getdate())) + ' ms' As TimeTaken
